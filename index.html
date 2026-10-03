@@ -26,6 +26,7 @@
       padding: 40px 24px;
     }
 
+    /* 共通 */
     .screen {
       display: none;
       min-height: calc(100vh - 80px);
@@ -65,6 +66,7 @@
       transform: scale(0.98);
     }
 
+    /* ホーム */
     .menu {
       width: 100%;
       display: flex;
@@ -72,6 +74,7 @@
       gap: 16px;
     }
 
+    /* 戻る */
     .back {
       align-self: flex-start;
       background: none;
@@ -81,7 +84,6 @@
     }
 
     /* 質問 */
-
     .question-area {
       flex: 1;
       display: flex;
@@ -102,7 +104,6 @@
     }
 
     /* 点 */
-
     .dot-area {
       position: relative;
       flex: 1;
@@ -111,41 +112,25 @@
       touch-action: manipulation;
     }
 
-    /*
-      残光を描くキャンバス
-    */
-    #trailCanvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
     .dot {
       position: absolute;
-
       width: 18px;
       height: 18px;
-
       border-radius: 50%;
-
       background: #cbd5ff;
 
-      left: 50%;
-      top: 50%;
-
-      transform: translate(-50%, -50%);
+      left: 0;
+      top: 0;
 
       /*
-        最初は少し速く、
-        最後にふわっと減速
+        触った直後は少し速く、
+        最後に向かってなめらかに減速
       */
       transition:
         left 2.5s cubic-bezier(0.15, 0.8, 0.25, 1),
         top 2.5s cubic-bezier(0.15, 0.8, 0.25, 1);
 
-      z-index: 2;
+      transform: translate(-50%, -50%);
     }
 
     .dot-help {
@@ -156,7 +141,6 @@
       color: #6f7789;
       font-size: 12px;
       pointer-events: none;
-      z-index: 3;
     }
   </style>
 </head>
@@ -166,7 +150,6 @@
   <div class="app">
 
     <!-- ホーム -->
-
     <div id="home" class="screen active">
 
       <h1>眠れない夜</h1>
@@ -176,7 +159,6 @@
       </div>
 
       <div class="menu">
-
         <button onclick="showQuestion()">
           どうでもいい質問
         </button>
@@ -184,14 +166,12 @@
         <button onclick="showDot()">
           ゆっくり動く点
         </button>
-
       </div>
 
     </div>
 
 
-    <!-- 質問 -->
-
+    <!-- どうでもいい質問 -->
     <div id="questionScreen" class="screen">
 
       <button class="back" onclick="goHome()">
@@ -199,9 +179,7 @@
       </button>
 
       <div class="question-area">
-
         <div id="question" class="question"></div>
-
       </div>
 
       <button class="next" onclick="newQuestion()">
@@ -211,8 +189,7 @@
     </div>
 
 
-    <!-- 点 -->
-
+    <!-- ゆっくり動く点 -->
     <div id="dotScreen" class="screen">
 
       <button class="back" onclick="goHome()">
@@ -220,8 +197,6 @@
       </button>
 
       <div class="dot-area" id="dotArea">
-
-        <canvas id="trailCanvas"></canvas>
 
         <div class="dot" id="dot"></div>
 
@@ -243,47 +218,21 @@
     ========================= */
 
     const questions = [
-
-      "今、右手に何がある？",
-
-      "冷蔵庫を開けたら最初に目に入るものは？",
-
-      "家の中で一番丸いものは？",
-
-      "今履いているものの色は？",
-
-      "今日見た中で一番小さいものは？",
-
-      "家の中で一番高いところにあるものは？",
-
-      "今いちばん近くにある四角いものは？",
-
-      "今日、何回くらい冷蔵庫を開けた？",
-
-      "今の部屋にある「なんでここにあるんだろう」というものは？",
-
-      "家の中で一番古そうなものは？",
-
-      "今見える範囲にある文字をひとつ探してみて",
-
-      "今日一番どうでもよかった出来事は？",
-
-      "今の部屋で一番静かな場所は？",
-
-      "いま食べてもいいなら何を食べる？",
-
-      "「たぬき」と聞いて最初に思い浮かんだものは？",
-
-      "今、布団の中で足の指は何本伸びてる？",
-
-      "冷蔵庫の中で一番存在感がないものは？",
-
-      "今、一番近くにある青いものは？",
-
-      "今日いちばん長く見ていたものは？",
-
-      "今いる場所で、一番古そうな音は？"
-
+      "今日いちばんおいしかったものは？",
+      "今、家の中でいちばん好きな場所は？",
+      "子どもの頃、好きだったお菓子は？",
+      "明日、晴れていたら何したい？",
+      "コンビニでつい見てしまう棚は？",
+      "今まで食べた中で、また食べたいものは？",
+      "最近ちょっと嬉しかったことは？",
+      "好きな匂いは？",
+      "今、飲みたいものは？",
+      "小さい頃、好きだった遊びは？",
+      "もし明日休みだったら何をする？",
+      "最近よく見かけるものは？",
+      "好きな季節は？",
+      "今の部屋で一番落ち着く場所は？",
+      "最近、笑ったことは？"
     ];
 
     let lastQuestion = -1;
@@ -306,12 +255,9 @@
       let index;
 
       do {
-
-        index =
-          Math.floor(
-            Math.random() * questions.length
-          );
-
+        index = Math.floor(
+          Math.random() * questions.length
+        );
       } while (
         index === lastQuestion &&
         questions.length > 1
@@ -326,51 +272,11 @@
 
 
     /* =========================
-       点
+       ゆっくり動く点
     ========================= */
 
-    const dot =
-      document.getElementById("dot");
-
-    const dotArea =
-      document.getElementById("dotArea");
-
-    const canvas =
-      document.getElementById("trailCanvas");
-
-    const ctx =
-      canvas.getContext("2d");
-
-
-    function resizeCanvas() {
-
-      const rect =
-        dotArea.getBoundingClientRect();
-
-      const dpr =
-        window.devicePixelRatio || 1;
-
-      canvas.width =
-        rect.width * dpr;
-
-      canvas.height =
-        rect.height * dpr;
-
-      canvas.style.width =
-        rect.width + "px";
-
-      canvas.style.height =
-        rect.height + "px";
-
-      ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-      );
-    }
+    const dot = document.getElementById("dot");
+    const dotArea = document.getElementById("dotArea");
 
 
     function showDot() {
@@ -381,217 +287,50 @@
         .getElementById("dotScreen")
         .classList.add("active");
 
+      /*
+        画面を開いたときは
+        いきなりジャンプさせず、
+        真ん中に置く
+      */
+
       setTimeout(() => {
 
-        resizeCanvas();
+        const width = dotArea.clientWidth;
+        const height = dotArea.clientHeight;
 
-        const width =
-          dotArea.clientWidth;
-
-        const height =
-          dotArea.clientHeight;
-
-        dot.style.left =
-          (width / 2) + "px";
-
-        dot.style.top =
-          (height / 2) + "px";
+        dot.style.left = (width / 2) + "px";
+        dot.style.top = (height / 2) + "px";
 
       }, 50);
     }
 
 
     /*
-      点を押したら移動
+      点を押したら、
+      別の場所へゆっくり移動
     */
-
-    dot.addEventListener(
-      "click",
-      moveDot
-    );
+    dot.addEventListener("click", moveDot);
 
 
     function moveDot() {
 
-      const width =
-        dotArea.clientWidth;
-
-      const height =
-        dotArea.clientHeight;
+      const width = dotArea.clientWidth;
+      const height = dotArea.clientHeight;
 
       const margin = 30;
 
-      /*
-        今いる位置
-      */
-
-      const startX =
-        parseFloat(dot.style.left) ||
-        width / 2;
-
-      const startY =
-        parseFloat(dot.style.top) ||
-        height / 2;
-
-
-      /*
-        新しい場所
-      */
-
-      const endX =
+      const x =
         Math.random() *
         (width - margin * 2) +
         margin;
 
-      const endY =
+      const y =
         Math.random() *
         (height - margin * 2) +
         margin;
 
-
-      /*
-        通り道を光らせる
-      */
-
-      drawTrail(
-        startX,
-        startY,
-        endX,
-        endY
-      );
-
-
-      /*
-        点を移動
-      */
-
-      dot.style.left =
-        endX + "px";
-
-      dot.style.top =
-        endY + "px";
-    }
-
-
-    /*
-      残光を描く
-    */
-
-    function drawTrail(
-      startX,
-      startY,
-      endX,
-      endY
-    ) {
-
-      resizeCanvas();
-
-      /*
-        以前の光を消す
-      */
-
-      ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-
-      /*
-        少しだけ曲げる
-      */
-
-      const middleX =
-        (startX + endX) / 2 +
-        (Math.random() - 0.5) * 80;
-
-      const middleY =
-        (startY + endY) / 2 +
-        (Math.random() - 0.5) * 80;
-
-
-      /*
-        淡い光
-      */
-
-      ctx.beginPath();
-
-      ctx.moveTo(
-        startX,
-        startY
-      );
-
-      ctx.quadraticCurveTo(
-        middleX,
-        middleY,
-        endX,
-        endY
-      );
-
-
-      /*
-        ほんのり光る線
-      */
-
-      ctx.strokeStyle =
-        "rgba(203, 213, 255, 0.16)";
-
-      ctx.lineWidth = 7;
-
-      ctx.lineCap = "round";
-
-      ctx.shadowBlur = 12;
-
-      ctx.shadowColor =
-        "rgba(203, 213, 255, 0.18)";
-
-      ctx.stroke();
-
-
-      /*
-        数秒かけて消す
-      */
-
-      setTimeout(
-        fadeTrail,
-        100
-      );
-    }
-
-
-    function fadeTrail() {
-
-      let opacity = 1;
-
-      const fade =
-        setInterval(() => {
-
-          opacity -= 0.035;
-
-          ctx.fillStyle =
-            "rgba(16, 21, 34, 0.035)";
-
-          ctx.fillRect(
-            0,
-            0,
-            canvas.clientWidth,
-            canvas.clientHeight
-          );
-
-          if (opacity <= 0) {
-
-            clearInterval(fade);
-
-            ctx.clearRect(
-              0,
-              0,
-              canvas.clientWidth,
-              canvas.clientHeight
-            );
-          }
-
-        }, 80);
+      dot.style.left = x + "px";
+      dot.style.top = y + "px";
     }
 
 
@@ -604,11 +343,7 @@
       document
         .querySelectorAll(".screen")
         .forEach(screen => {
-
-          screen.classList.remove(
-            "active"
-          );
-
+          screen.classList.remove("active");
         });
     }
 
@@ -621,12 +356,6 @@
         .getElementById("home")
         .classList.add("active");
     }
-
-
-    window.addEventListener(
-      "resize",
-      resizeCanvas
-    );
 
   </script>
 
