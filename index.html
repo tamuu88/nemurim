@@ -16,38 +16,39 @@
       background: #101522;
       color: #e8eaf0;
       font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
     .app {
       width: 100%;
       max-width: 500px;
       min-height: 100vh;
+      margin: 0 auto;
       padding: 40px 24px;
-      display: flex;
+    }
+
+    /* 共通 */
+    .screen {
+      display: none;
+      min-height: calc(100vh - 80px);
       flex-direction: column;
-      align-items: center;
+    }
+
+    .screen.active {
+      display: flex;
     }
 
     h1 {
+      text-align: center;
       font-size: 24px;
       font-weight: 400;
       margin: 30px 0 10px;
     }
 
     .subtitle {
+      text-align: center;
       font-size: 13px;
       color: #8f96a8;
       margin-bottom: 50px;
-    }
-
-    .menu {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
     }
 
     button {
@@ -58,12 +59,22 @@
       color: #e8eaf0;
       background: #1c2434;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     button:active {
       transform: scale(0.98);
     }
 
+    /* ホーム */
+    .menu {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 戻る */
     .back {
       align-self: flex-start;
       background: none;
@@ -72,21 +83,9 @@
       font-size: 14px;
     }
 
-    .screen {
-      display: none;
-      width: 100%;
-      flex: 1;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .screen.active {
-      display: flex;
-    }
-
+    /* 質問 */
     .question-area {
       flex: 1;
-      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -104,12 +103,13 @@
       margin-bottom: 30px;
     }
 
+    /* 点 */
     .dot-area {
       position: relative;
-      width: 100%;
-      height: 70vh;
+      flex: 1;
       min-height: 400px;
       overflow: hidden;
+      touch-action: manipulation;
     }
 
     .dot {
@@ -118,12 +118,19 @@
       height: 18px;
       border-radius: 50%;
       background: #cbd5ff;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+
+      left: 0;
+      top: 0;
+
+      /*
+        触った直後は少し速く、
+        最後に向かってなめらかに減速
+      */
       transition:
-  　　 left 2.5s ease-out,
-  　　 top 2.5s ease-out;
+        left 2.5s cubic-bezier(0.15, 0.8, 0.25, 1),
+        top 2.5s cubic-bezier(0.15, 0.8, 0.25, 1);
+
+      transform: translate(-50%, -50%);
     }
 
     .dot-help {
@@ -133,6 +140,7 @@
       text-align: center;
       color: #6f7789;
       font-size: 12px;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -143,38 +151,59 @@
 
     <!-- ホーム -->
     <div id="home" class="screen active">
+
       <h1>眠れない夜</h1>
-      <div class="subtitle">少しだけ、遊んでいこう。</div>
+
+      <div class="subtitle">
+        少しだけ、遊んでいこう。
+      </div>
 
       <div class="menu">
-        <button onclick="showQuestion()">どうでもいい質問</button>
-        <button onclick="showDot()">ゆっくり動く点</button>
+        <button onclick="showQuestion()">
+          どうでもいい質問
+        </button>
+
+        <button onclick="showDot()">
+          ゆっくり動く点
+        </button>
       </div>
+
     </div>
 
 
-    <!-- 質問 -->
+    <!-- どうでもいい質問 -->
     <div id="questionScreen" class="screen">
 
-      <button class="back" onclick="goHome()">← 戻る</button>
+      <button class="back" onclick="goHome()">
+        ← 戻る
+      </button>
 
       <div class="question-area">
         <div id="question" class="question"></div>
       </div>
 
-      <button class="next" onclick="newQuestion()">もう一問</button>
+      <button class="next" onclick="newQuestion()">
+        もう一問
+      </button>
 
     </div>
 
 
-    <!-- 点 -->
+    <!-- ゆっくり動く点 -->
     <div id="dotScreen" class="screen">
 
-      <button class="back" onclick="goHome()">← 戻る</button>
+      <button class="back" onclick="goHome()">
+        ← 戻る
+      </button>
 
       <div class="dot-area" id="dotArea">
+
         <div class="dot" id="dot"></div>
-        <div class="dot-help">点を押してみて</div>
+
+        <div class="dot-help">
+          点を押してみて
+        </div>
+
       </div>
 
     </div>
@@ -183,6 +212,10 @@
 
 
   <script>
+
+    /* =========================
+       どうでもいい質問
+    ========================= */
 
     const questions = [
       "今日いちばんおいしかったものは？",
@@ -205,16 +238,14 @@
     let lastQuestion = -1;
 
 
-    function hideAll() {
-      document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-      });
-    }
-
-
     function showQuestion() {
+
       hideAll();
-      document.getElementById("questionScreen").classList.add("active");
+
+      document
+        .getElementById("questionScreen")
+        .classList.add("active");
+
       newQuestion();
     }
 
@@ -224,47 +255,106 @@
       let index;
 
       do {
-        index = Math.floor(Math.random() * questions.length);
-      } while (index === lastQuestion);
+        index = Math.floor(
+          Math.random() * questions.length
+        );
+      } while (
+        index === lastQuestion &&
+        questions.length > 1
+      );
 
       lastQuestion = index;
 
-      document.getElementById("question").textContent =
-        questions[index];
+      document
+        .getElementById("question")
+        .textContent = questions[index];
     }
 
 
-    function showDot() {
-      hideAll();
-      document.getElementById("dotScreen").classList.add("active");
-
-      setTimeout(moveDot, 300);
-    }
-
+    /* =========================
+       ゆっくり動く点
+    ========================= */
 
     const dot = document.getElementById("dot");
     const dotArea = document.getElementById("dotArea");
 
 
+    function showDot() {
+
+      hideAll();
+
+      document
+        .getElementById("dotScreen")
+        .classList.add("active");
+
+      /*
+        画面を開いたときは
+        いきなりジャンプさせず、
+        真ん中に置く
+      */
+
+      setTimeout(() => {
+
+        const width = dotArea.clientWidth;
+        const height = dotArea.clientHeight;
+
+        dot.style.left = (width / 2) + "px";
+        dot.style.top = (height / 2) + "px";
+
+      }, 50);
+    }
+
+
+    /*
+      点を押したら、
+      別の場所へゆっくり移動
+    */
     dot.addEventListener("click", moveDot);
 
 
     function moveDot() {
 
-      const areaWidth = dotArea.clientWidth;
-      const areaHeight = dotArea.clientHeight;
+      const width = dotArea.clientWidth;
+      const height = dotArea.clientHeight;
 
-      const x = Math.random() * (areaWidth - 40) + 20;
-      const y = Math.random() * (areaHeight - 40) + 20;
+      const margin = 30;
+
+      const x =
+        Math.random() *
+        (width - margin * 2) +
+        margin;
+
+      const y =
+        Math.random() *
+        (height - margin * 2) +
+        margin;
 
       dot.style.left = x + "px";
       dot.style.top = y + "px";
     }
 
 
+    /* =========================
+       画面切り替え
+    ========================= */
+
+    function hideAll() {
+
+      document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
+          screen.classList.remove("active");
+        });
+    }
+
+
     function goHome() {
+
       hideAll();
-      document.getElementById("home").classList.add("active");
+
+      document
+        .getElementById("home")
+        .classList.add("active");
     }
 
   </script>
