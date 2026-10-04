@@ -315,26 +315,27 @@ font-family: "Zen Maru Gothic", sans-serif;
 #shootingStar {
   position: fixed;
 
-  width: 3px;
-  height: 3px;
+  width: 6px;
+  height: 6px;
 
   border-radius: 50%;
 
-  background: #dcecff;
+  background: #e8f2ff;
 
   box-shadow:
-    0 0 5px rgba(220, 236, 255, 0.8),
-    -18px 18px 8px rgba(220, 236, 255, 0.15);
+    0 0 12px rgba(232, 242, 255, 1),
+    0 0 24px rgba(220, 236, 255, 0.7),
+    -40px 40px 18px rgba(220, 236, 255, 0.35);
 
   opacity: 0;
 
   pointer-events: none;
 
-  z-index: 0;
+  z-index: 10;
 }
 
 .shooting {
-  animation: shootingStar 1.2s ease-out forwards;
+  animation: shootingStar 1.6s ease-out forwards;
 }
 
 @keyframes shootingStar {
@@ -345,15 +346,21 @@ font-family: "Zen Maru Gothic", sans-serif;
   }
 
   15% {
-    opacity: 0.8;
+    opacity: 1;
+    transform: translate(-10px, 10px);
+  }
+
+  40% {
+    opacity: 1;
   }
 
   100% {
     opacity: 0;
-    transform: translate(-90px, 90px);
+    transform: translate(-160px, 160px);
   }
 
 }
+
 </style>
 </head>
 
