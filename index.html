@@ -405,24 +405,21 @@
 
 function startCircle() {
 
-  // 前のタイマーを止める
   clearTimeout(circleTimer);
 
   // いったん明るくする
   breathingCircle.style.transition = "none";
 
-  breathingCircle.style.opacity = "0.9";
+  breathingCircle.style.opacity = "1";
 
   breathingCircle.style.boxShadow =
-    "0 0 25px rgba(203, 213, 255, 0.15)";
+    "0 0 30px rgba(203, 213, 255, 0.25)";
 
-
-  // ブラウザに「明るくなった」と認識させる
+  // 少し待ってから、ゆっくり暗くする
   requestAnimationFrame(() => {
 
     requestAnimationFrame(() => {
 
-      // ゆっくり暗くする
       breathingCircle.style.transition =
         "opacity 6s ease-out, box-shadow 6s ease-out";
 
@@ -435,17 +432,6 @@ function startCircle() {
 
   });
 }
-
-      setTimeout(() => {
-
-        breathingCircle.style.opacity = "0.08";
-
-        breathingCircle.style.boxShadow =
-          "0 0 4px rgba(203, 213, 255, 0.03)";
-
-      }, 100);
-    }
-
 
     /*
       画面のどこをタップしても
