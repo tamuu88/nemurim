@@ -122,10 +122,6 @@
       left: 0;
       top: 0;
 
-      /*
-        触った直後は少し速く、
-        最後に向かってなめらかに減速
-      */
       transition:
         left 2.5s cubic-bezier(0.15, 0.8, 0.25, 1),
         top 2.5s cubic-bezier(0.15, 0.8, 0.25, 1);
@@ -142,6 +138,39 @@
       font-size: 12px;
       pointer-events: none;
     }
+
+
+    /* =========================
+       ゆっくり消える円
+    ========================= */
+
+    .circle-area {
+      position: relative;
+      flex: 1;
+      min-height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      touch-action: manipulation;
+    }
+
+    .breathing-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+
+      border: 1px solid rgba(203, 213, 255, 0.5);
+
+      box-shadow:
+        0 0 25px rgba(203, 213, 255, 0.15);
+
+      opacity: 0.9;
+
+      transition:
+        opacity 6s ease-out,
+        box-shadow 6s ease-out;
+    }
+
   </style>
 </head>
 
@@ -159,6 +188,7 @@
       </div>
 
       <div class="menu">
+
         <button onclick="showQuestion()">
           どうでもいい質問
         </button>
@@ -166,6 +196,11 @@
         <button onclick="showDot()">
           ゆっくり動く点
         </button>
+
+        <button onclick="showCircle()">
+          ゆっくり消える円
+        </button>
+
       </div>
 
     </div>
@@ -202,6 +237,25 @@
 
         <div class="dot-help">
           点を押してみて
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ゆっくり消える円 -->
+    <div id="circleScreen" class="screen">
+
+      <button class="back" onclick="goHome()">
+        ← 戻る
+      </button>
+
+      <div class="circle-area" id="circleArea">
+
+        <div
+          class="breathing-circle"
+          id="breathingCircle">
         </div>
 
       </div>
@@ -287,12 +341,6 @@
         .getElementById("dotScreen")
         .classList.add("active");
 
-      /*
-        画面を開いたときは
-        いきなりジャンプさせず、
-        真ん中に置く
-      */
-
       setTimeout(() => {
 
         const width = dotArea.clientWidth;
@@ -305,10 +353,6 @@
     }
 
 
-    /*
-      点を押したら、
-      別の場所へゆっくり移動
-    */
     dot.addEventListener("click", moveDot);
 
 
@@ -332,6 +376,67 @@
       dot.style.left = x + "px";
       dot.style.top = y + "px";
     }
+
+
+    /* =========================
+       ゆっくり消える円
+    ========================= */
+
+    const breathingCircle =
+      document.getElementById("breathingCircle");
+
+    const circleArea =
+      document.getElementById("circleArea");
+
+
+    function showCircle() {
+
+      hideAll();
+
+      document
+        .getElementById("circleScreen")
+        .classList.add("active");
+
+      startCircle();
+    }
+
+
+    function startCircle() {
+
+      /*
+        まず明るい状態に戻す
+      */
+
+      breathingCircle.style.opacity = "0.9";
+
+      breathingCircle.style.boxShadow =
+        "0 0 25px rgba(203, 213, 255, 0.15)";
+
+
+      /*
+        少しずつ暗くする
+      */
+
+      setTimeout(() => {
+
+        breathingCircle.style.opacity = "0.08";
+
+        breathingCircle.style.boxShadow =
+          "0 0 4px rgba(203, 213, 255, 0.03)";
+
+      }, 100);
+    }
+
+
+    /*
+      画面のどこをタップしても
+      また明るくする
+    */
+
+    circleArea.addEventListener(
+      "click",
+      startCircle
+    );
 
 
     /* =========================
