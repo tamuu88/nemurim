@@ -140,6 +140,31 @@
     }
 
 
+    .shuffle-area {
+  flex: 1;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 40px;
+}
+
+.shuffle-text {
+  font-size: 18px;
+  line-height: 1.8;
+  max-width: 300px;
+}
+
+.shuffle-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
     /* =========================
        ゆっくり消える円
     ========================= */
@@ -194,15 +219,19 @@
         <button onclick="showQuestion()">
           どうでもいい質問
         </button>
+        
 
         <button onclick="showDot()">
           ゆっくり動く点
         </button>
+        
 
         <button onclick="showCircle()">
           ゆっくり消える円
         </button>
 
+　　　　　<button onclick="showShuffle()">認知シャッフル</button>
+        
         <button onclick="window.open('https://music.youtube.com/playlist?list=OLAK5uy_l93fn61F98XV_kWQ3OFcKARdS3sUHwVFE&si=zzGSIfuGwQHNorjF', '_blank')">
   夜に聴く
         </button>
@@ -269,7 +298,21 @@
     </div>
 
   </div>
+  
+<div id="shuffleScreen" class="screen">
+  <button class="back" onclick="goHome()">← 戻る</button>
 
+  <div class="shuffle-area">
+    <div class="shuffle-text" id="shuffleText">
+      今、見えるものをひとつ思い浮かべる
+    </div>
+
+    <div class="shuffle-buttons">
+      <button onclick="nextShuffle()">思い浮かべた</button>
+      <button onclick="resetShuffle()">もう一度最初から</button>
+    </div>
+  </div>
+</div>
 
   <script>
 
@@ -452,8 +495,41 @@ function startCircle() {
       "click",
       startCircle
     );
+    
+    /* =========================
+       認知シャッフル
+    ========================= */
+    
+let shuffleCount = 0;
 
+function showShuffle() {
+  hideAll();
 
+  document
+    .getElementById("shuffleScreen")
+    .classList.add("active");
+
+  resetShuffle();
+}
+
+function nextShuffle() {
+  shuffleCount++;
+
+  if (shuffleCount === 1) {
+    document.getElementById("shuffleText").textContent =
+      "その単語の1文字目から始まる単語を\nひとつ思い浮かべる";
+  } else {
+    document.getElementById("shuffleText").textContent =
+      "その単語の" + shuffleCount + "文字目から始まる単語を\nひとつ思い浮かべる";
+  }
+}
+
+function resetShuffle() {
+  shuffleCount = 0;
+
+  document.getElementById("shuffleText").textContent =
+    "今、見えるものをひとつ思い浮かべる";
+}
     /* =========================
        画面切り替え
     ========================= */
