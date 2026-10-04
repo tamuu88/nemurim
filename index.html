@@ -401,21 +401,40 @@
     }
 
 
-    function startCircle() {
+    let circleTimer;
 
-      /*
-        まず明るい状態に戻す
-      */
+function startCircle() {
 
-      breathingCircle.style.opacity = "0.9";
+  // 前のタイマーを止める
+  clearTimeout(circleTimer);
+
+  // いったん明るくする
+  breathingCircle.style.transition = "none";
+
+  breathingCircle.style.opacity = "0.9";
+
+  breathingCircle.style.boxShadow =
+    "0 0 25px rgba(203, 213, 255, 0.15)";
+
+
+  // ブラウザに「明るくなった」と認識させる
+  requestAnimationFrame(() => {
+
+    requestAnimationFrame(() => {
+
+      // ゆっくり暗くする
+      breathingCircle.style.transition =
+        "opacity 6s ease-out, box-shadow 6s ease-out";
+
+      breathingCircle.style.opacity = "0.08";
 
       breathingCircle.style.boxShadow =
-        "0 0 25px rgba(203, 213, 255, 0.15)";
+        "0 0 4px rgba(203, 213, 255, 0.03)";
 
+    });
 
-      /*
-        少しずつ暗くする
-      */
+  });
+}
 
       setTimeout(() => {
 
