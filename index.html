@@ -5,197 +5,318 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>眠れない夜</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+ <style>
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #101522;
-      color: #e8eaf0;
-      font-family: sans-serif;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
-    .app {
-      width: 100%;
-      max-width: 500px;
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 40px 24px;
-    }
+  body {
+    margin: 0;
+    min-height: 100vh;
 
-    /* 共通 */
-    .screen {
-      display: none;
-      min-height: calc(100vh - 80px);
-      flex-direction: column;
-    }
+    /* 画像をイメージした青紫 */
+    background: #2b3598;
 
-    .screen.active {
-      display: flex;
-    }
+    /* 淡い水色 */
+    color: #dcecff;
 
-    h1 {
-      text-align: center;
-      font-size: 24px;
-      font-weight: 400;
-      margin: 30px 0 10px;
-    }
+    font-family:
+      ui-rounded,
+      "Hiragino Maru Gothic ProN",
+      "Yu Gothic UI",
+      "Yu Gothic",
+      "Meiryo",
+      sans-serif;
+  }
 
-    .subtitle {
-      text-align: center;
-      font-size: 13px;
-      color: #8f96a8;
-      margin-bottom: 50px;
-    }
+  .app {
+    width: 100%;
+    max-width: 500px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
 
-    button {
-      border: none;
-      border-radius: 18px;
-      padding: 20px;
-      font-size: 16px;
-      color: #e8eaf0;
-      background: #1c2434;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
 
-    button:active {
-      transform: scale(0.98);
-    }
+  /* =========================
+     共通
+  ========================= */
 
-    /* ホーム */
-    .menu {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+  .screen {
+    display: none;
+    min-height: calc(100vh - 80px);
+    flex-direction: column;
+  }
 
-    /* 戻る */
-    .back {
-      align-self: flex-start;
-      background: none;
-      padding: 10px 0;
-      color: #8f96a8;
-      font-size: 14px;
-    }
+  .screen.active {
+    display: flex;
+  }
 
-    /* 質問 */
-    .question-area {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
 
-    .question {
-      font-size: 23px;
-      line-height: 1.8;
-      font-weight: 400;
-    }
+  /* =========================
+     タイトル
+  ========================= */
 
-    .next {
-      width: 100%;
-      margin-bottom: 30px;
-    }
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 400;
 
-    /* 点 */
-    .dot-area {
-      position: relative;
-      flex: 1;
-      min-height: 400px;
-      overflow: hidden;
-      touch-action: manipulation;
-    }
+    color: #dcecff;
 
-    .dot {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #cbd5ff;
+    margin: 30px 0 10px;
+  }
 
-      left: 0;
-      top: 0;
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
 
-      transition:
-        left 2.5s cubic-bezier(0.15, 0.8, 0.25, 1),
-        top 2.5s cubic-bezier(0.15, 0.8, 0.25, 1);
+    color: #b8c9ec;
 
-      transform: translate(-50%, -50%);
-    }
+    margin-bottom: 50px;
+  }
 
-    .dot-help {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
-      color: #6f7789;
-      font-size: 12px;
-      pointer-events: none;
-    }
 
-    /* 認知シャッフル */
-    .shuffle-area {
-      flex: 1;
-      min-height: 400px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      gap: 40px;
-    }
+  /* =========================
+     ボタン共通
+  ========================= */
 
-    .shuffle-text {
-      font-size: 18px;
-      line-height: 1.8;
-      max-width: 300px;
-      white-space: pre-line;
-    }
+  button {
+    border: none;
+    border-radius: 18px;
 
-    .shuffle-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-      max-width: 280px;
-    }
+    padding: 20px;
 
-    /* ゆっくり消える円 */
-    .circle-area {
-      position: relative;
-      flex: 1;
-      min-height: 400px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding-bottom: 100px;
-      touch-action: manipulation;
-    }
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
 
-    .breathing-circle {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
+    color: #dcecff;
 
-      border: 1px solid rgba(203, 213, 255, 0.5);
+    background: #35419f;
 
-      box-shadow:
-        0 0 25px rgba(203, 213, 255, 0.15);
+    cursor: pointer;
 
-      opacity: 0.9;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-      transition:
-        opacity 6s ease-out,
-        box-shadow 6s ease-out;
-    }
+  button:active {
+    transform: scale(0.98);
+  }
 
-  </style>
+
+  /* =========================
+     ホーム
+  ========================= */
+
+  .menu {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+  }
+
+  /* ホームのボタンだけ、箱をなくす */
+
+  .menu button {
+    background: none;
+
+    padding: 14px;
+
+    font-size: 21px;
+    font-weight: 400;
+
+    color: #dcecff;
+  }
+
+  .menu button:active {
+    background: rgba(220, 236, 255, 0.08);
+  }
+
+
+  /* =========================
+     戻る
+  ========================= */
+
+  .back {
+    align-self: flex-start;
+
+    background: none;
+
+    padding: 10px 0;
+
+    color: #b8c9ec;
+
+    font-size: 14px;
+  }
+
+
+  /* =========================
+     質問
+  ========================= */
+
+  .question-area {
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .question {
+    font-size: 23px;
+    line-height: 1.8;
+
+    font-weight: 400;
+
+    color: #dcecff;
+  }
+
+  .next {
+    width: 100%;
+    margin-bottom: 30px;
+
+    background: #35419f;
+  }
+
+
+  /* =========================
+     点
+  ========================= */
+
+  .dot-area {
+    position: relative;
+
+    flex: 1;
+    min-height: 400px;
+
+    overflow: hidden;
+
+    touch-action: manipulation;
+  }
+
+  .dot {
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    background: #c9e5f5;
+
+    left: 0;
+    top: 0;
+
+    transition:
+      left 2.5s cubic-bezier(0.15, 0.8, 0.25, 1),
+      top 2.5s cubic-bezier(0.15, 0.8, 0.25, 1);
+
+    transform: translate(-50%, -50%);
+  }
+
+  .dot-help {
+    position: absolute;
+
+    bottom: 20px;
+
+    width: 100%;
+
+    text-align: center;
+
+    color: #9eafd5;
+
+    font-size: 12px;
+
+    pointer-events: none;
+  }
+
+
+  /* =========================
+     認知シャッフル
+  ========================= */
+
+  .shuffle-area {
+    flex: 1;
+    min-height: 400px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    gap: 40px;
+  }
+
+  .shuffle-text {
+    font-size: 18px;
+    line-height: 1.8;
+
+    max-width: 300px;
+
+    white-space: pre-line;
+
+    color: #dcecff;
+  }
+
+  .shuffle-buttons {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    width: 100%;
+    max-width: 280px;
+  }
+
+
+  /* =========================
+     ゆっくり消える円
+  ========================= */
+
+  .circle-area {
+    position: relative;
+
+    flex: 1;
+    min-height: 400px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding-bottom: 100px;
+
+    touch-action: manipulation;
+  }
+
+  .breathing-circle {
+    width: 150px;
+    height: 150px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(201, 229, 245, 0.5);
+
+    box-shadow:
+      0 0 25px rgba(201, 229, 245, 0.15);
+
+    opacity: 0.9;
+
+    transition:
+      opacity 6s ease-out,
+      box-shadow 6s ease-out;
+  }
+
+</style>
 </head>
 
 <body>
