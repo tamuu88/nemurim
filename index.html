@@ -139,46 +139,43 @@
       pointer-events: none;
     }
 
-
+    /* 認知シャッフル */
     .shuffle-area {
-  flex: 1;
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 40px;
-}
+      flex: 1;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 40px;
+    }
 
-.shuffle-text {
-  font-size: 18px;
-  line-height: 1.8;
-  max-width: 300px;
-}
+    .shuffle-text {
+      font-size: 18px;
+      line-height: 1.8;
+      max-width: 300px;
+      white-space: pre-line;
+    }
 
-.shuffle-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 280px;
-}
+    .shuffle-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 280px;
+    }
 
-    /* =========================
-       ゆっくり消える円
-    ========================= */
-    
+    /* ゆっくり消える円 */
     .circle-area {
-  position: relative;
-  flex: 1;
-  min-height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 100px;
-  box-sizing: border-box;
-  touch-action: manipulation;
+      position: relative;
+      flex: 1;
+      min-height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 100px;
+      touch-action: manipulation;
     }
 
     .breathing-circle {
@@ -219,21 +216,21 @@
         <button onclick="showQuestion()">
           どうでもいい質問
         </button>
-        
+
+        <button onclick="showShuffle()">
+          認知シャッフル
+        </button>
 
         <button onclick="showDot()">
           ゆっくり動く点
         </button>
-        
 
         <button onclick="showCircle()">
           ゆっくり消える円
         </button>
 
-　　　　　<button onclick="showShuffle()">認知シャッフル</button>
-        
         <button onclick="window.open('https://music.youtube.com/playlist?list=OLAK5uy_l93fn61F98XV_kWQ3OFcKARdS3sUHwVFE&si=zzGSIfuGwQHNorjF', '_blank')">
-  夜に聴く
+          夜に聴く
         </button>
 
       </div>
@@ -255,6 +252,36 @@
       <button class="next" onclick="newQuestion()">
         もう一問
       </button>
+
+    </div>
+
+
+    <!-- 認知シャッフル -->
+    <div id="shuffleScreen" class="screen">
+
+      <button class="back" onclick="goHome()">
+        ← 戻る
+      </button>
+
+      <div class="shuffle-area">
+
+        <div class="shuffle-text" id="shuffleText">
+          今、見えるものをひとつ思い浮かべる
+        </div>
+
+        <div class="shuffle-buttons">
+
+          <button onclick="nextShuffle()">
+            思い浮かべた
+          </button>
+
+          <button onclick="resetShuffle()">
+            もう一度最初から
+          </button>
+
+        </div>
+
+      </div>
 
     </div>
 
@@ -298,21 +325,7 @@
     </div>
 
   </div>
-  
-<div id="shuffleScreen" class="screen">
-  <button class="back" onclick="goHome()">← 戻る</button>
 
-  <div class="shuffle-area">
-    <div class="shuffle-text" id="shuffleText">
-      今、見えるものをひとつ思い浮かべる
-    </div>
-
-    <div class="shuffle-buttons">
-      <button onclick="nextShuffle()">思い浮かべた</button>
-      <button onclick="resetShuffle()">もう一度最初から</button>
-    </div>
-  </div>
-</div>
 
   <script>
 
@@ -344,7 +357,6 @@
 
     let lastQuestion = -1;
 
-
     function showQuestion() {
 
       hideAll();
@@ -355,7 +367,6 @@
 
       newQuestion();
     }
-
 
     function newQuestion() {
 
@@ -379,12 +390,54 @@
 
 
     /* =========================
+       認知シャッフル
+    ========================= */
+
+    let shuffleCount = 0;
+
+    function showShuffle() {
+
+      hideAll();
+
+      document
+        .getElementById("shuffleScreen")
+        .classList.add("active");
+
+      resetShuffle();
+    }
+
+    function nextShuffle() {
+
+      shuffleCount++;
+
+      document
+        .getElementById("shuffleText")
+        .textContent =
+          "その単語の" +
+          shuffleCount +
+          "文字目から始まる単語を\nひとつ思い浮かべる";
+    }
+
+    function resetShuffle() {
+
+      shuffleCount = 0;
+
+      document
+        .getElementById("shuffleText")
+        .textContent =
+          "今、見えるものをひとつ思い浮かべる";
+    }
+
+
+    /* =========================
        ゆっくり動く点
     ========================= */
 
-    const dot = document.getElementById("dot");
-    const dotArea = document.getElementById("dotArea");
+    const dot =
+      document.getElementById("dot");
 
+    const dotArea =
+      document.getElementById("dotArea");
 
     function showDot() {
 
@@ -396,23 +449,33 @@
 
       setTimeout(() => {
 
-        const width = dotArea.clientWidth;
-        const height = dotArea.clientHeight;
+        const width =
+          dotArea.clientWidth;
 
-        dot.style.left = (width / 2) + "px";
-        dot.style.top = (height / 2) + "px";
+        const height =
+          dotArea.clientHeight;
+
+        dot.style.left =
+          (width / 2) + "px";
+
+        dot.style.top =
+          (height / 2) + "px";
 
       }, 50);
     }
 
-
-    dot.addEventListener("click", moveDot);
-
+    dot.addEventListener(
+      "click",
+      moveDot
+    );
 
     function moveDot() {
 
-      const width = dotArea.clientWidth;
-      const height = dotArea.clientHeight;
+      const width =
+        dotArea.clientWidth;
+
+      const height =
+        dotArea.clientHeight;
 
       const margin = 30;
 
@@ -426,8 +489,11 @@
         (height - margin * 2) +
         margin;
 
-      dot.style.left = x + "px";
-      dot.style.top = y + "px";
+      dot.style.left =
+        x + "px";
+
+      dot.style.top =
+        y + "px";
     }
 
 
@@ -436,11 +502,14 @@
     ========================= */
 
     const breathingCircle =
-      document.getElementById("breathingCircle");
+      document.getElementById(
+        "breathingCircle"
+      );
 
     const circleArea =
-      document.getElementById("circleArea");
-
+      document.getElementById(
+        "circleArea"
+      );
 
     function showCircle() {
 
@@ -453,83 +522,41 @@
       startCircle();
     }
 
-
-    let circleTimer;
-
-function startCircle() {
-
-  clearTimeout(circleTimer);
-
-  // いったん明るくする
-  breathingCircle.style.transition = "none";
-
-  breathingCircle.style.opacity = "1";
-
-  breathingCircle.style.boxShadow =
-    "0 0 65px rgba(203, 213, 255, 0.25)";
-
-  // 少し待ってから、ゆっくり暗くする
-  requestAnimationFrame(() => {
-
-    requestAnimationFrame(() => {
+    function startCircle() {
 
       breathingCircle.style.transition =
-        "opacity 6s ease-out, box-shadow 6s ease-out";
+        "none";
 
-      breathingCircle.style.opacity = "0.08";
+      breathingCircle.style.opacity =
+        "1";
 
       breathingCircle.style.boxShadow =
-        "0 0 4px rgba(203, 213, 255, 0.03)";
+        "0 0 90px rgba(203, 213, 255, 0.35)";
 
-    });
+      requestAnimationFrame(() => {
 
-  });
-}
+        requestAnimationFrame(() => {
 
-    /*
-      画面のどこをタップしても
-      また明るくする
-    */
+          breathingCircle.style.transition =
+            "opacity 6s ease-out, box-shadow 6s ease-out";
+
+          breathingCircle.style.opacity =
+            "0.08";
+
+          breathingCircle.style.boxShadow =
+            "0 0 4px rgba(203, 213, 255, 0.03)";
+
+        });
+
+      });
+    }
 
     circleArea.addEventListener(
       "click",
       startCircle
     );
-    
-    /* =========================
-       認知シャッフル
-    ========================= */
-    
-let shuffleCount = 0;
 
-function showShuffle() {
-  hideAll();
 
-  document
-    .getElementById("shuffleScreen")
-    .classList.add("active");
-
-  resetShuffle();
-}
-
-function nextShuffle() {
-  shuffleCount++;
-
-  if (shuffleCount === 1) {
-    document.getElementById("shuffleText").textContent =
-      "その単語の1文字目から始まる単語を\nひとつ思い浮かべる";
-  } else {
-    document.getElementById("shuffleText").textContent =
-      "その単語の" + shuffleCount + "文字目から始まる単語を\nひとつ思い浮かべる";
-  }
-}
-
-function resetShuffle() {
-  shuffleCount = 0;
-
-  document.getElementById("shuffleText").textContent =
-    "今、見えるものをひとつ思い浮かべる";
-}
     /* =========================
        画面切り替え
     ========================= */
@@ -542,7 +569,6 @@ function resetShuffle() {
           screen.classList.remove("active");
         });
     }
-
 
     function goHome() {
 
