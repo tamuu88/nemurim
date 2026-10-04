@@ -310,12 +310,56 @@ font-family: "Zen Maru Gothic", sans-serif;
       opacity 6s ease-out,
       box-shadow 6s ease-out;
   }
+/* 流れ星 */
 
+#shootingStar {
+  position: fixed;
+
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background: #dcecff;
+
+  box-shadow:
+    0 0 5px rgba(220, 236, 255, 0.8),
+    -18px 18px 8px rgba(220, 236, 255, 0.15);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+.shooting {
+  animation: shootingStar 1.2s ease-out forwards;
+}
+
+@keyframes shootingStar {
+
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  15% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-90px, 90px);
+  }
+
+}
 </style>
 </head>
 
 <body>
-
+  
+<div id="shootingStar"></div>
   <div class="app">
 
     <!-- ホーム -->
@@ -672,7 +716,54 @@ font-family: "Zen Maru Gothic", sans-serif;
       startCircle
     );
 
+   /* =========================
+   流れ星
+========================= */
 
+const shootingStar =
+  document.getElementById("shootingStar");
+
+function makeShootingStar() {
+
+  // ホーム画面にいるときだけ
+  if (
+    !document
+      .getElementById("home")
+      .classList.contains("active")
+  ) {
+    scheduleShootingStar();
+    return;
+  }
+
+  const x =
+    Math.random() * (window.innerWidth - 80) + 40;
+
+  const y =
+    Math.random() * 180 + 40;
+
+  shootingStar.style.left = x + "px";
+  shootingStar.style.top = y + "px";
+
+  shootingStar.classList.remove("shooting");
+
+  void shootingStar.offsetWidth;
+
+  shootingStar.classList.add("shooting");
+
+  scheduleShootingStar();
+}
+
+
+function scheduleShootingStar() {
+
+  const delay =
+    8000 + Math.random() * 6000;
+
+  setTimeout(makeShootingStar, delay);
+}
+
+
+scheduleShootingStar();
     /* =========================
        画面切り替え
     ========================= */
