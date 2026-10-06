@@ -152,6 +152,7 @@
 
 
 <!-- 音 -->
+
 <div id="musicScreen" class="screen">
 
   <button class="back" onclick="goHome()">
@@ -160,47 +161,46 @@
 
   <div class="music-area">
 
-    <div class="music-title">
-      音
-    </div>
+```
+<div class="music-title">
+  音
+</div>
 
-    <div class="music-description">
-      眠るときに聴きたいプレイリストを登録できます。
-    </div>
+<div class="music-description">
+  眠るときに聴きたい音を<br>
+  登録しておけます。
+</div>
 
-    <input
-      type="url"
-      id="playlistUrl"
-      placeholder="プレイリストのURL"
-    >
+<div class="playlist-form">
 
-    <button onclick="savePlaylist()">
-      保存
-    </button>
+  <input
+    type="text"
+    id="playlistName"
+    placeholder="プレイリスト名"
+  >
 
-    <button
-      id="openPlaylistButton"
-      onclick="openPlaylist()"
-      style="display: none;"
-    >
-      プレイリストを開く
-    </button>
+  <input
+    type="url"
+    id="playlistUrl"
+    placeholder="プレイリストのURL"
+  >
 
-    <button
-      id="deletePlaylistButton"
-      class="delete-playlist"
-      onclick="deletePlaylist()"
-      style="display: none;"
-    >
-      登録を消す
-    </button>
+  <button onclick="savePlaylist()">
+    追加
+  </button>
+
+</div>
+
+<div
+  id="playlistList"
+  class="playlist-list">
+</div>
+```
 
   </div>
 
 </div>
 
-
-  </div>
 
   <script src="script.js"></script>
 
