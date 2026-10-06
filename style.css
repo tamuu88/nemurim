@@ -1,0 +1,349 @@
+* {
+  box-sizing: border-box;
+  }
+
+body {
+margin: 0;
+min-height: 100vh;
+
+background: #3a427f;
+color: #dcecff;
+
+font-family: "Zen Maru Gothic", sans-serif;
+}
+
+.app {
+width: 100%;
+max-width: 500px;
+min-height: 100vh;
+margin: 0 auto;
+padding: 40px 24px;
+}
+
+/* =========================
+共通
+========================= */
+
+.screen {
+display: none;
+min-height: calc(100vh - 80px);
+flex-direction: column;
+}
+
+.screen.active {
+display: flex;
+}
+
+/* =========================
+タイトル
+========================= */
+
+h1 {
+text-align: center;
+font-size: 24px;
+font-weight: 400;
+
+color: #dcecff;
+
+margin: 30px 0 10px;
+}
+
+.subtitle {
+text-align: center;
+font-size: 13px;
+
+color: #b8c9ec;
+
+margin-bottom: 50px;
+}
+
+/* =========================
+ボタン共通
+========================= */
+
+button {
+border: none;
+border-radius: 18px;
+
+padding: 20px;
+
+font-family: inherit;
+font-size: 16px;
+font-weight: 400;
+
+color: #dcecff;
+
+background: #35419f;
+
+cursor: pointer;
+
+-webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+transform: scale(0.98);
+}
+
+/* =========================
+ホーム
+========================= */
+
+.menu {
+width: 100%;
+
+display: flex;
+flex-direction: column;
+
+gap: 6px;
+}
+
+.menu button {
+background: #454d88;
+padding: 20px;
+font-size: 16px;
+font-weight: 400;
+color: #dcecff;
+}
+
+.menu button:active {
+background: rgba(220, 236, 255, 0.08);
+}
+
+/* =========================
+戻る
+========================= */
+
+.back {
+align-self: flex-start;
+
+background: none;
+
+padding: 10px 0;
+
+color: #b8c9ec;
+
+font-size: 14px;
+}
+
+/* =========================
+質問
+========================= */
+
+.question-area {
+flex: 1;
+
+display: flex;
+justify-content: center;
+align-items: center;
+
+text-align: center;
+}
+
+.question {
+font-size: 23px;
+line-height: 1.8;
+
+font-weight: 400;
+
+color: #dcecff;
+}
+
+.next {
+width: 100%;
+margin-bottom: 30px;
+
+background: #35419f;
+}
+
+/* =========================
+認知シャッフル
+========================= */
+
+.shuffle-area {
+flex: 1;
+min-height: 400px;
+
+display: flex;
+flex-direction: column;
+
+justify-content: center;
+align-items: center;
+
+text-align: center;
+
+gap: 40px;
+}
+
+.shuffle-text {
+font-size: 18px;
+line-height: 1.8;
+
+max-width: 300px;
+
+white-space: pre-line;
+
+color: #dcecff;
+}
+
+.shuffle-buttons {
+display: flex;
+flex-direction: column;
+
+gap: 12px;
+
+width: 100%;
+max-width: 280px;
+}
+
+/* =========================
+ゆっくり動く点
+========================= */
+
+.dot-area {
+position: relative;
+
+flex: 1;
+min-height: 400px;
+
+overflow: hidden;
+
+touch-action: manipulation;
+}
+
+.dot {
+position: absolute;
+
+width: 18px;
+height: 18px;
+
+border-radius: 50%;
+
+background: #c9e5f5;
+
+left: 0;
+top: 0;
+
+transition:
+left 2.5s cubic-bezier(0.15, 0.8, 0.25, 1),
+top 2.5s cubic-bezier(0.15, 0.8, 0.25, 1);
+
+transform: translate(-50%, -50%);
+}
+
+.dot-help {
+position: absolute;
+
+bottom: 20px;
+
+width: 100%;
+
+text-align: center;
+
+color: #9eafd5;
+
+font-size: 12px;
+
+pointer-events: none;
+}
+
+/* =========================
+ゆっくり消える円
+========================= */
+
+.circle-area {
+position: relative;
+
+flex: 1;
+min-height: 400px;
+
+display: flex;
+
+justify-content: center;
+align-items: center;
+
+padding-bottom: 100px;
+
+touch-action: manipulation;
+}
+
+.breathing-circle {
+width: 150px;
+height: 150px;
+
+border-radius: 50%;
+
+border: 1px solid rgba(201, 229, 245, 0.5);
+
+box-shadow:
+0 0 25px rgba(201, 229, 245, 0.15);
+
+opacity: 0.9;
+
+transition:
+opacity 6s ease-out,
+box-shadow 6s ease-out;
+}
+
+/* =========================
+音
+========================= */
+
+.music-area {
+flex: 1;
+
+display: flex;
+flex-direction: column;
+
+justify-content: center;
+align-items: center;
+
+text-align: center;
+
+gap: 14px;
+}
+
+.music-title {
+font-size: 22px;
+color: #dcecff;
+}
+
+.music-description {
+font-size: 13px;
+line-height: 1.7;
+
+color: #b8c9ec;
+
+max-width: 280px;
+
+margin-bottom: 10px;
+}
+
+.music-area input {
+width: 100%;
+max-width: 320px;
+
+border: none;
+border-radius: 14px;
+
+padding: 16px;
+
+font-family: inherit;
+font-size: 14px;
+
+color: #35406f;
+background: #dcecff;
+
+outline: none;
+}
+
+.music-area button {
+width: 100%;
+max-width: 320px;
+}
+
+.delete-playlist {
+background: transparent;
+color: #9eafd5;
+font-size: 13px;
+padding: 10px;
+}
