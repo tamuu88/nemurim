@@ -1,798 +1,209 @@
 <!DOCTYPE html>
+
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
+
   <link rel="icon" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
-  
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>眠れない夜</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500&display=swap" rel="stylesheet">
 
- <style>
-
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
-
-    /* 画像をイメージした青紫 */
-    background: #3a427f;
-
-    /* 淡い水色 */
-    color: #dcecff;
-
-font-family: "Zen Maru Gothic", sans-serif;
- }
-  .app {
-    width: 100%;
-    max-width: 500px;
-    min-height: 100vh;
-    margin: 0 auto;
-    padding: 40px 24px;
-  }
-
-
-  /* =========================
-     共通
-  ========================= */
-
-  .screen {
-    display: none;
-    min-height: calc(100vh - 80px);
-    flex-direction: column;
-  }
-
-  .screen.active {
-    display: flex;
-  }
-
-
-  /* =========================
-     タイトル
-  ========================= */
-
-  h1 {
-    text-align: center;
-    font-size: 24px;
-    font-weight: 400;
-
-    color: #dcecff;
-
-    margin: 30px 0 10px;
-  }
-
-  .subtitle {
-    text-align: center;
-    font-size: 13px;
-
-    color: #b8c9ec;
-
-    margin-bottom: 50px;
-  }
-
-
-  /* =========================
-     ボタン共通
-  ========================= */
-
-  button {
-    border: none;
-    border-radius: 18px;
-
-    padding: 20px;
-
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: 400;
-
-    color: #dcecff;
-
-    background: #35419f;
-
-    cursor: pointer;
-
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  button:active {
-    transform: scale(0.98);
-  }
-
-
-  /* =========================
-     ホーム
-  ========================= */
-
-  .menu {
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 6px;
-  }
-
-  /* ホームのボタンだけ、箱をなくす */
-
-.menu button {
-  background: #454d88;
-  padding: 20px;
-  font-size: 16px;
-  font-weight: 400;
-  color: #dcecff;
-}
-
-  .menu button:active {
-    background: rgba(220, 236, 255, 0.08);
-  }
-
-
-  /* =========================
-     戻る
-  ========================= */
-
-  .back {
-    align-self: flex-start;
-
-    background: none;
-
-    padding: 10px 0;
-
-    color: #b8c9ec;
-
-    font-size: 14px;
-  }
-
-
-  /* =========================
-     質問
-  ========================= */
-
-  .question-area {
-    flex: 1;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-  }
-
-  .question {
-    font-size: 23px;
-    line-height: 1.8;
-
-    font-weight: 400;
-
-    color: #dcecff;
-  }
-
-  .next {
-    width: 100%;
-    margin-bottom: 30px;
-
-    background: #35419f;
-  }
-
-
-  /* =========================
-     点
-  ========================= */
-
-  .dot-area {
-    position: relative;
-
-    flex: 1;
-    min-height: 400px;
-
-    overflow: hidden;
-
-    touch-action: manipulation;
-  }
-
-  .dot {
-    position: absolute;
-
-    width: 18px;
-    height: 18px;
-
-    border-radius: 50%;
-
-    background: #c9e5f5;
-
-    left: 0;
-    top: 0;
-
-    transition:
-      left 2.5s cubic-bezier(0.15, 0.8, 0.25, 1),
-      top 2.5s cubic-bezier(0.15, 0.8, 0.25, 1);
-
-    transform: translate(-50%, -50%);
-  }
-
-  .dot-help {
-    position: absolute;
-
-    bottom: 20px;
-
-    width: 100%;
-
-    text-align: center;
-
-    color: #9eafd5;
-
-    font-size: 12px;
-
-    pointer-events: none;
-  }
-
-
-  /* =========================
-     認知シャッフル
-  ========================= */
-
-  .shuffle-area {
-    flex: 1;
-    min-height: 400px;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-
-    gap: 40px;
-  }
-
-  .shuffle-text {
-    font-size: 18px;
-    line-height: 1.8;
-
-    max-width: 300px;
-
-    white-space: pre-line;
-
-    color: #dcecff;
-  }
-
-  .shuffle-buttons {
-    display: flex;
-    flex-direction: column;
-
-    gap: 12px;
-
-    width: 100%;
-    max-width: 280px;
-  }
-
-
-  /* =========================
-     ゆっくり消える円
-  ========================= */
-
-  .circle-area {
-    position: relative;
-
-    flex: 1;
-    min-height: 400px;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    padding-bottom: 100px;
-
-    touch-action: manipulation;
-  }
-
-  .breathing-circle {
-    width: 150px;
-    height: 150px;
-
-    border-radius: 50%;
-
-    border: 1px solid rgba(201, 229, 245, 0.5);
-
-    box-shadow:
-      0 0 25px rgba(201, 229, 245, 0.15);
-
-    opacity: 0.9;
-
-    transition:
-      opacity 6s ease-out,
-      box-shadow 6s ease-out;
-  }
-/* 流れ星 */
-
-#shootingStar {
-  position: fixed;
-
-  width: 7px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: #ffffff;
-
-  box-shadow:
-    0 0 10px #ffffff,
-    0 0 25px rgba(220, 236, 255, 0.9),
-    -50px 50px 20px rgba(220, 236, 255, 0.6);
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  z-index: 9999;
-}
-
-.shooting {
-  animation: shootingStar 1.8s ease-out forwards;
-}
-
-@keyframes shootingStar {
-
-  0% {
-    opacity: 0;
-    transform: translate(0, 0);
-  }
-
-  15% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(-180px, 180px);
-  }
-
-}
-</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  
-<div id="shootingStar"></div>
+
   <div class="app">
 
-    <!-- ホーム -->
-    <div id="home" class="screen active">
+```
+<!-- ホーム -->
+<div id="home" class="screen active">
 
-      <h1>眠れない夜</h1>
+  <h1>眠れない夜</h1>
 
-      <div class="subtitle">
-        少しだけ、遊んでいこう。
-      </div>
+  <div class="subtitle">
+    少しだけ、遊んでいこう。
+  </div>
 
-      <div class="menu">
+  <div class="menu">
 
-        <button onclick="showQuestion()">
-          問
-        </button>
+    <button onclick="showQuestion()">
+      問
+    </button>
 
-        <button onclick="showShuffle()">
-          考
-        </button>
+    <button onclick="showShuffle()">
+      考
+    </button>
 
-        <button onclick="showDot()">
-          点
-        </button>
+    <button onclick="showDot()">
+      点
+    </button>
 
-        <button onclick="showCircle()">
-          円
-        </button>
+    <button onclick="showCircle()">
+      円
+    </button>
 
-        <button onclick="window.open('https://music.youtube.com/playlist?list=OLAK5uy_l93fn61F98XV_kWQ3OFcKARdS3sUHwVFE&si=zzGSIfuGwQHNorjF', '_blank')">
-          音
-        </button>
+    <button onclick="showMusic()">
+      音
+    </button>
 
-      </div>
+  </div>
 
+</div>
+
+
+<!-- どうでもいい質問 -->
+<div id="questionScreen" class="screen">
+
+  <button class="back" onclick="goHome()">
+    ← 戻る
+  </button>
+
+  <div class="question-area">
+    <div id="question" class="question"></div>
+  </div>
+
+  <button class="next" onclick="newQuestion()">
+    もう一問
+  </button>
+
+</div>
+
+
+<!-- 認知シャッフル -->
+<div id="shuffleScreen" class="screen">
+
+  <button class="back" onclick="goHome()">
+    ← 戻る
+  </button>
+
+  <div class="shuffle-area">
+
+    <div class="shuffle-text" id="shuffleText">
+      今、見えるものをひとつ思い浮かべる
     </div>
 
+    <div class="shuffle-buttons">
 
-    <!-- どうでもいい質問 -->
-    <div id="questionScreen" class="screen">
-
-      <button class="back" onclick="goHome()">
-        ← 戻る
+      <button onclick="nextShuffle()">
+        思い浮かべた
       </button>
 
-      <div class="question-area">
-        <div id="question" class="question"></div>
-      </div>
-
-      <button class="next" onclick="newQuestion()">
-        もう一問
+      <button onclick="resetShuffle()">
+        もう一度最初から
       </button>
-
-    </div>
-
-
-    <!-- 認知シャッフル -->
-    <div id="shuffleScreen" class="screen">
-
-      <button class="back" onclick="goHome()">
-        ← 戻る
-      </button>
-
-      <div class="shuffle-area">
-
-        <div class="shuffle-text" id="shuffleText">
-          今、見えるものをひとつ思い浮かべる
-        </div>
-
-        <div class="shuffle-buttons">
-
-          <button onclick="nextShuffle()">
-            思い浮かべた
-          </button>
-
-          <button onclick="resetShuffle()">
-            もう一度最初から
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ゆっくり動く点 -->
-    <div id="dotScreen" class="screen">
-
-      <button class="back" onclick="goHome()">
-        ← 戻る
-      </button>
-
-      <div class="dot-area" id="dotArea">
-
-        <div class="dot" id="dot"></div>
-
-        <div class="dot-help">
-          点を押してみて
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ゆっくり消える円 -->
-    <div id="circleScreen" class="screen">
-
-      <button class="back" onclick="goHome()">
-        ← 戻る
-      </button>
-
-      <div class="circle-area" id="circleArea">
-
-        <div
-          class="breathing-circle"
-          id="breathingCircle">
-        </div>
-
-      </div>
 
     </div>
 
   </div>
 
+</div>
 
-  <script>
 
-    /* =========================
-       どうでもいい質問
-    ========================= */
+<!-- ゆっくり動く点 -->
+<div id="dotScreen" class="screen">
 
-    const questions = [
-      "最近の一番どうでもよかった出来事は？",
-      "今、家の中でいちばん好きなコーナーは？",
-      "子どもの頃、好きだったお菓子は？",
-      "今度の休みが雨だったら何したい？",
-      "コンビニで気になってるものは？",
-      "今まで食べた中で、また食べたいものは？",
-      "最近ちょっと嬉しかったことは？",
-      "好きな匂いを3つ思い出す",
-      "今度、飲んでみたい飲みものは？",
-      "小さい頃、好きだった遊びは？",
-      "明日食べたいものは？",
-      "また行ってみたい場所ある？",
-      "今度作ってみたいレシピは？",
-      "家の中で一番古そうなものは？",
-      "冷蔵庫の中で一番存在感のないものは？",
-      "家の中の白いものを3つ思い浮かべる",
-      "あ行ではじまる動物を思い浮かべる",
-      "は行ではじまる食べ物を思い浮かべる",
-      "最近、ちょっとおかしかったことは？"
-    ];
+  <button class="back" onclick="goHome()">
+    ← 戻る
+  </button>
 
-    let lastQuestion = -1;
+  <div class="dot-area" id="dotArea">
 
-    function showQuestion() {
+    <div class="dot" id="dot"></div>
 
-      hideAll();
+    <div class="dot-help">
+      点を押してみて
+    </div>
 
-      document
-        .getElementById("questionScreen")
-        .classList.add("active");
+  </div>
 
-      newQuestion();
-    }
+</div>
 
-    function newQuestion() {
 
-      let index;
+<!-- ゆっくり消える円 -->
+<div id="circleScreen" class="screen">
 
-      do {
-        index = Math.floor(
-          Math.random() * questions.length
-        );
-      } while (
-        index === lastQuestion &&
-        questions.length > 1
-      );
+  <button class="back" onclick="goHome()">
+    ← 戻る
+  </button>
 
-      lastQuestion = index;
+  <div class="circle-area" id="circleArea">
 
-      document
-        .getElementById("question")
-        .textContent = questions[index];
-    }
+    <div
+      class="breathing-circle"
+      id="breathingCircle">
+    </div>
 
+  </div>
 
-    /* =========================
-       認知シャッフル
-    ========================= */
+</div>
 
-    let shuffleCount = 0;
 
-    function showShuffle() {
+<!-- 音 -->
+<div id="musicScreen" class="screen">
 
-      hideAll();
+  <button class="back" onclick="goHome()">
+    ← 戻る
+  </button>
 
-      document
-        .getElementById("shuffleScreen")
-        .classList.add("active");
+  <div class="music-area">
 
-      resetShuffle();
-    }
+    <div class="music-title">
+      音
+    </div>
 
-    function nextShuffle() {
+    <div class="music-description">
+      眠るときに聴きたいプレイリストを登録できます。
+    </div>
 
-      shuffleCount++;
+    <input
+      type="url"
+      id="playlistUrl"
+      placeholder="プレイリストのURL"
+    >
 
-      document
-        .getElementById("shuffleText")
-        .textContent =
-          "その単語の" +
-          shuffleCount +
-          "文字目から始まる単語を\nひとつ思い浮かべる";
-    }
+    <button onclick="savePlaylist()">
+      保存
+    </button>
 
-    function resetShuffle() {
+    <button
+      id="openPlaylistButton"
+      onclick="openPlaylist()"
+      style="display: none;"
+    >
+      プレイリストを開く
+    </button>
 
-      shuffleCount = 0;
+    <button
+      id="deletePlaylistButton"
+      class="delete-playlist"
+      onclick="deletePlaylist()"
+      style="display: none;"
+    >
+      登録を消す
+    </button>
 
-      document
-        .getElementById("shuffleText")
-        .textContent =
-          "今、見えるものをひとつ思い浮かべる";
-    }
+  </div>
 
+</div>
+```
 
-    /* =========================
-       ゆっくり動く点
-    ========================= */
+  </div>
 
-    const dot =
-      document.getElementById("dot");
-
-    const dotArea =
-      document.getElementById("dotArea");
-
-    function showDot() {
-
-      hideAll();
-
-      document
-        .getElementById("dotScreen")
-        .classList.add("active");
-
-      setTimeout(() => {
-
-        const width =
-          dotArea.clientWidth;
-
-        const height =
-          dotArea.clientHeight;
-
-        dot.style.left =
-          (width / 2) + "px";
-
-        dot.style.top =
-          (height / 2) + "px";
-
-      }, 50);
-    }
-
-    dot.addEventListener(
-      "click",
-      moveDot
-    );
-
-    function moveDot() {
-
-      const width =
-        dotArea.clientWidth;
-
-      const height =
-        dotArea.clientHeight;
-
-      const margin = 30;
-
-      const x =
-        Math.random() *
-        (width - margin * 2) +
-        margin;
-
-      const y =
-        Math.random() *
-        (height - margin * 2) +
-        margin;
-
-      dot.style.left =
-        x + "px";
-
-      dot.style.top =
-        y + "px";
-    }
-
-
-    /* =========================
-       ゆっくり消える円
-    ========================= */
-
-    const breathingCircle =
-      document.getElementById(
-        "breathingCircle"
-      );
-
-    const circleArea =
-      document.getElementById(
-        "circleArea"
-      );
-
-    function showCircle() {
-
-      hideAll();
-
-      document
-        .getElementById("circleScreen")
-        .classList.add("active");
-
-      startCircle();
-    }
-
-    function startCircle() {
-
-      breathingCircle.style.transition =
-        "none";
-
-      breathingCircle.style.opacity =
-        "1";
-
-      breathingCircle.style.boxShadow =
-        "0 0 90px rgba(203, 213, 255, 0.35)";
-
-      requestAnimationFrame(() => {
-
-        requestAnimationFrame(() => {
-
-          breathingCircle.style.transition =
-            "opacity 6s ease-out, box-shadow 6s ease-out";
-
-          breathingCircle.style.opacity =
-            "0.08";
-
-          breathingCircle.style.boxShadow =
-            "0 0 4px rgba(203, 213, 255, 0.03)";
-
-        });
-
-      });
-    }
-
-    circleArea.addEventListener(
-      "click",
-      startCircle
-    );
-
-   /* =========================
-   流れ星
-========================= */
-
-const shootingStar =
-  document.getElementById("shootingStar");
-
-function makeShootingStar() {
-
-  // ホーム画面にいるときだけ
-  if (
-    !document
-      .getElementById("home")
-      .classList.contains("active")
-  ) {
-    scheduleShootingStar();
-    return;
-  }
-
-  const x =
-    Math.random() * (window.innerWidth - 80) + 40;
-
-  const y =
-    Math.random() * 180 + 40;
-
-  shootingStar.style.left = x + "px";
-  shootingStar.style.top = y + "px";
-
-  shootingStar.classList.remove("shooting");
-
-  void shootingStar.offsetWidth;
-
-  shootingStar.classList.add("shooting");
-
-  scheduleShootingStar();
-}
-
-
-function scheduleShootingStar() {
-
-  const delay =3000;
-
-  setTimeout(makeShootingStar, delay);
-}
-
-
-scheduleShootingStar();
-    /* =========================
-       画面切り替え
-    ========================= */
-
-    function hideAll() {
-
-      document
-        .querySelectorAll(".screen")
-        .forEach(screen => {
-          screen.classList.remove("active");
-        });
-    }
-
-    function goHome() {
-
-      hideAll();
-
-      document
-        .getElementById("home")
-        .classList.add("active");
-    }
-
-  </script>
+  <script src="script.js"></script>
 
 </body>
+
 </html>
