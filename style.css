@@ -294,17 +294,18 @@ flex: 1;
 display: flex;
 flex-direction: column;
 
-justify-content: center;
 align-items: center;
 
 text-align: center;
 
-gap: 14px;
+padding-top: 20px;
 }
 
 .music-title {
 font-size: 22px;
 color: #dcecff;
+
+margin-bottom: 10px;
 }
 
 .music-description {
@@ -313,19 +314,26 @@ line-height: 1.7;
 
 color: #b8c9ec;
 
-max-width: 280px;
-
-margin-bottom: 10px;
+margin-bottom: 30px;
 }
 
-.music-area input {
+.playlist-form {
 width: 100%;
 max-width: 320px;
+
+display: flex;
+flex-direction: column;
+
+gap: 10px;
+}
+
+.playlist-form input {
+width: 100%;
 
 border: none;
 border-radius: 14px;
 
-padding: 16px;
+padding: 15px;
 
 font-family: inherit;
 font-size: 14px;
@@ -336,14 +344,57 @@ background: #dcecff;
 outline: none;
 }
 
-.music-area button {
+.playlist-form button {
 width: 100%;
-max-width: 320px;
 }
 
-.delete-playlist {
-background: transparent;
+.playlist-list {
+width: 100%;
+max-width: 320px;
+
+margin-top: 30px;
+
+display: flex;
+flex-direction: column;
+
+gap: 8px;
+}
+
+.playlist-item {
+display: flex;
+align-items: center;
+
+gap: 8px;
+
+padding: 14px 16px;
+
+border-radius: 16px;
+
+background: #454d88;
+}
+
+.playlist-open {
+flex: 1;
+
+padding: 4px 0;
+
+text-align: left;
+
+background: none;
+
+color: #dcecff;
+
+font-size: 15px;
+}
+
+.playlist-delete {
+flex: none;
+
+padding: 5px;
+
+background: none;
+
 color: #9eafd5;
-font-size: 13px;
-padding: 10px;
+
+font-size: 12px;
 }
