@@ -223,18 +223,14 @@ startCircle
 音・プレイリスト
 ========================= */
 
+const playlistName =
+document.getElementById("playlistName");
+
 const playlistUrl =
 document.getElementById("playlistUrl");
 
-const openPlaylistButton =
-document.getElementById(
-"openPlaylistButton"
-);
-
-const deletePlaylistButton =
-document.getElementById(
-"deletePlaylistButton"
-);
+const playlistList =
+document.getElementById("playlistList");
 
 function showMusic() {
 
@@ -244,17 +240,26 @@ document
 .getElementById("musicScreen")
 .classList.add("active");
 
-loadPlaylist();
+loadPlaylists();
 }
 
-/* プレイリストを保存 */
+/* プレイリストを追加 */
 
 function savePlaylist() {
+
+const name =
+playlistName.value.trim();
 
 const url =
 playlistUrl.value.trim();
 
+if (!name) {
+alert("プレイリスト名を入力してください。");
+return;
+}
+
 if (!url) {
+alert("プレイリストのURLを入力してください。");
 return;
 }
 
@@ -265,80 +270,114 @@ alert("URLを入力してください。");
 return;
 }
 
+const playlists =
+JSON.parse(
+localStorage.getItem("sleepPlaylists") || "[]"
+);
+
+playlists.push({
+id: Date.now(),
+name: name,
+url: url
+});
+
 localStorage.setItem(
-"sleepPlaylist",
-url
+"sleepPlaylists",
+JSON.stringify(playlists)
 );
 
-loadPlaylist();
-}
-
-/* 保存されているプレイリストを表示 */
-
-function loadPlaylist() {
-
-const savedUrl =
-localStorage.getItem(
-"sleepPlaylist"
-);
-
-if (savedUrl) {
-
-```
-playlistUrl.value =
-  savedUrl;
-
-openPlaylistButton.style.display =
-  "block";
-
-deletePlaylistButton.style.display =
-  "block";
-```
-
-} else {
-
-```
+playlistName.value = "";
 playlistUrl.value = "";
 
-openPlaylistButton.style.display =
-  "none";
+loadPlaylists();
+}
 
-deletePlaylistButton.style.display =
-  "none";
+/* プレイリストを表示 */
+
+function loadPlaylists() {
+
+const playlists =
+JSON.parse(
+localStorage.getItem("sleepPlaylists") || "[]"
+);
+
+playlistList.innerHTML = "";
+
+playlists.forEach(playlist => {
+
+```
+const item =
+  document.createElement("div");
+
+item.className =
+  "playlist-item";
+
+const openButton =
+  document.createElement("button");
+
+openButton.className =
+  "playlist-open";
+
+openButton.textContent =
+  playlist.name;
+
+openButton.onclick = () => {
+  window.open(
+    playlist.url,
+    "_blank"
+  );
+};
+
+
+const deleteButton =
+  document.createElement("button");
+
+deleteButton.className =
+  "playlist-delete";
+
+deleteButton.textContent =
+  "削除";
+
+deleteButton.onclick = () => {
+  deletePlaylist(playlist.id);
+};
+
+
+item.appendChild(openButton);
+item.appendChild(deleteButton);
+
+playlistList.appendChild(item);
 ```
 
-}
-}
-
-/* プレイリストを開く */
-
-function openPlaylist() {
-
-const savedUrl =
-localStorage.getItem(
-"sleepPlaylist"
-);
-
-if (!savedUrl) {
-return;
-}
-
-window.open(
-savedUrl,
-"_blank"
-);
+});
 }
 
 /* プレイリストを削除 */
 
-function deletePlaylist() {
+function deletePlaylist(id) {
 
-localStorage.removeItem(
-"sleepPlaylist"
+const playlists =
+JSON.parse(
+localStorage.getItem("sleepPlaylists") || "[]"
 );
 
-loadPlaylist();
+const updatedPlaylists =
+playlists.filter(
+playlist => playlist.id !== id
+);
+
+localStorage.setItem(
+"sleepPlaylists",
+JSON.stringify(updatedPlaylists)
+);
+
+loadPlaylists();
 }
+
+/* 起動時にプレイリストを読み込む */
+
+loadPlaylists();
+
 
 /* =========================
 画面切り替え
